@@ -1,0 +1,7 @@
+# Should play a sound if the power of mending is used.
+# true: played / false: not played
+playSound: true
+# The volume of the sound, 1 is default
+soundVolume: 1
+# The speed of the sound, 1 is default, smaller than 1 is slower
+soundPitch: 1

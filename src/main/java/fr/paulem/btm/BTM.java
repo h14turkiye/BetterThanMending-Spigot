@@ -1,6 +1,11 @@
 package fr.paulem.btm;
 
-import org.bukkit.Bukkit;
+import fr.paulem.btm.interfaces.IDamageSystem;
+import fr.paulem.btm.legacy.LegacyDamage;
+import fr.paulem.btm.newer.NewerDamage;
+import org.bukkit.Material;
+import org.bukkit.Sound;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -8,88 +13,77 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.plugin.java.JavaPlugin;
 
-// upload github et spigot
-
 public class BTM extends JavaPlugin implements Listener {
+    public static IDamageSystem damageSystem = Versioning.isPost17() ? new NewerDamage() : new LegacyDamage();
+    public static FileConfiguration config;
+
     @Override
     public void onEnable() {
-        getLogger().info("Enabled !");
+        if(!Versioning.isPost9()) {
+            getLogger().severe("You need to use a 1.9+ server! Mending isn't present in older versions!");
+            setEnabled(false);
+        }
+        this.saveDefaultConfig();
+        config = getConfig();
         getServer().getPluginManager().registerEvents(this, this);
+        getLogger().info("Enabled!");
     }
 
     @Override
     public void onDisable() {
-        getLogger().info("Disabled !");
+        getLogger().info("Disabled! See you later!");
     }
 
     @EventHandler
     public void onItemUse(PlayerInteractEvent e) {
-        ItemStack item = e.getItem();
         Player player = e.getPlayer();
-        if(item == null || !player.isSneaking() ||
+        ItemStack item = player.getInventory().getItemInMainHand();
+
+        System.out.println(item.getType());
+        System.out.println(item.getType() == Material.AIR);
+        if(item.getType() == Material.AIR) return;
+
+        System.out.println(!damageSystem.isDamageable(item));
+        if(!damageSystem.isDamageable(item)) return;
+
+
+        // Continue if item has Mending, the player is sneaking, and he's right-clicking in air
+        System.out.println(!player.isSneaking() ||
                 !item.containsEnchantment(Enchantment.MENDING) ||
-                !(e.getAction() == Action.RIGHT_CLICK_AIR || e.getAction() == Action.RIGHT_CLICK_BLOCK)) return;
-        if(isPost17() && !(item.getItemMeta() instanceof Damageable)) return;
-        if(!hasDamage(item)) return;
+                e.getAction() != Action.RIGHT_CLICK_AIR);
+        System.out.println(!player.isSneaking());
+        System.out.println(!item.containsEnchantment(Enchantment.MENDING));
+        System.out.println(e.getAction() != Action.RIGHT_CLICK_AIR);
+        if(!player.isSneaking() ||
+                !item.containsEnchantment(Enchantment.MENDING) ||
+                e.getAction() != Action.RIGHT_CLICK_AIR) return;
+
+        // If it doesn't have any damage, return
+        System.out.println(!damageSystem.hasDamage(item));
+        if(!damageSystem.hasDamage(item)) return;
 
         double ratio = item.getEnchantmentLevel(Enchantment.MENDING) * 2.0;
-        int playerXP = getPlayerXP(player);
+        int playerXP = ExperienceSystem.getPlayerXP(player);
 
-        if (playerXP >= 30 && getDamage(item) >= 20 * ratio) {
-            setDamage(item, getDamage(item) - (int) (20 * ratio));
-            changePlayerExp(player, -20);
+        int itemDamages = damageSystem.getDamage(item);
+
+        if (playerXP >= 30 && itemDamages >= 20 * ratio) {
+            damageSystem.setDamage(item, itemDamages - (int) (20 * ratio));
+            ExperienceSystem.changePlayerExp(player, -20);
         } else if (playerXP >= 2) {
-            setDamage(item, getDamage(item) - (int) (2 * ratio));
-            changePlayerExp(player, -2);
+            damageSystem.setDamage(item, itemDamages - (int) (2 * ratio));
+            ExperienceSystem.changePlayerExp(player, -2);
         } else return;
+
+        // Should play sound?
+        if(config.getBoolean("playSound", true))
+            player.playSound(player.getLocation(),
+                    Sound.BLOCK_ANVIL_PLACE,
+                    (float) config.getDouble("soundVolume", 1),
+                    (float) config.getDouble("soundPitch", 1));
+
         e.setCancelled(true);
-    }
-
-    public static boolean hasDamage(ItemStack item){
-        System.out.println((item.getType().getMaxDurability() - item.getDurability()) < item.getType().getMaxDurability());
-        if(isPost17()) return ((Damageable) item.getItemMeta()).hasDamage();
-        else return (item.getType().getMaxDurability() - item.getDurability()) < item.getType().getMaxDurability();
-    }
-
-    public static int getDamage(ItemStack item){
-        if(isPost17()) return ((Damageable) item.getItemMeta()).getDamage();
-        else return item.getDurability();
-    }
-
-    public static void setDamage(ItemStack item, int damage){
-        if(isPost17()){
-            Damageable damageable = (Damageable) item.getItemMeta();
-            damageable.setDamage(damage);
-            item.setItemMeta(damageable);
-        } else item.setDurability((short) damage);
-    }
-
-    public static void changePlayerExp(Player player, int exp){
-        int currentExp = getPlayerXP(player);
-
-        player.setExp(0);
-        player.setLevel(0);
-
-        player.giveExp(currentExp + exp);
-    }
-
-    public static int getPlayerXP(Player player) {
-        return (int) (getExperienceForLevel(player.getLevel()) + (player.getExp() * player.getExpToLevel()));
-    }
-
-    public static int getExperienceForLevel(int level) {
-        if (level == 0) return 0;
-        if (level > 0 && level < 16) return (int) (Math.pow(level, 2) + 6 * level);
-        else if (level > 15 && level < 32) return (int) (2.5 * Math.pow(level, 2) - 40.5 * level + 360);
-        else return (int) (4.5 * Math.pow(level, 2) - 162.5 * level + 2220);
-    }
-
-    public static boolean isPost17() {
-        String version = Bukkit.getVersion();
-        String[] mcParts = version.substring(version.indexOf("MC: ") + 4, version.length() - 1).split("\\.");
-        return Integer.parseInt(mcParts[1]) > 17 || (Integer.parseInt(mcParts[1]) == 17 && Integer.parseInt(mcParts[2]) >= 1);
     }
 }
