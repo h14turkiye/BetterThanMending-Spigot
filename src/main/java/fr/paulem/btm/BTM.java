@@ -41,27 +41,17 @@ public class BTM extends JavaPlugin implements Listener {
         Player player = e.getPlayer();
         ItemStack item = player.getInventory().getItemInMainHand();
 
-        System.out.println(item.getType());
-        System.out.println(item.getType() == Material.AIR);
         if(item.getType() == Material.AIR) return;
 
-        System.out.println(!damageSystem.isDamageable(item));
         if(!damageSystem.isDamageable(item)) return;
 
 
         // Continue if item has Mending, the player is sneaking, and he's right-clicking in air
-        System.out.println(!player.isSneaking() ||
-                !item.containsEnchantment(Enchantment.MENDING) ||
-                e.getAction() != Action.RIGHT_CLICK_AIR);
-        System.out.println(!player.isSneaking());
-        System.out.println(!item.containsEnchantment(Enchantment.MENDING));
-        System.out.println(e.getAction() != Action.RIGHT_CLICK_AIR);
         if(!player.isSneaking() ||
                 !item.containsEnchantment(Enchantment.MENDING) ||
                 e.getAction() != Action.RIGHT_CLICK_AIR) return;
 
         // If it doesn't have any damage, return
-        System.out.println(!damageSystem.hasDamage(item));
         if(!damageSystem.hasDamage(item)) return;
 
         double ratio = item.getEnchantmentLevel(Enchantment.MENDING) * 2.0;
