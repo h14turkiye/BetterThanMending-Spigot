@@ -1,6 +1,6 @@
-package fr.paulem.btm.newer;
+package io.github.paulem.btm.newer;
 
-import fr.paulem.btm.interfaces.IDamageSystem;
+import io.github.paulem.btm.interfaces.IDamageSystem;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.Damageable;
 

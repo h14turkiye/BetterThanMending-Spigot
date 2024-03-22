@@ -1,4 +1,4 @@
-package fr.paulem.btm;
+package io.github.paulem.btm;
 
 import org.bukkit.entity.Player;
 

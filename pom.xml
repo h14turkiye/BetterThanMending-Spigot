@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>fr.paulem.btm</groupId>
-    <artifactId>BetterThanMending</artifactId>
+    <artifactId>BetterMending</artifactId>
     <version>2.2</version>
 
     <repositories>
@@ -43,7 +43,7 @@
                     <relocations>
                         <relocation>
                             <pattern>com.jeff_media.updatechecker</pattern>
-                            <shadedPattern>io.github.paulem.libs.updatechecker</shadedPattern>
+                            <shadedPattern>io.github.paulem.btm.libs.updatechecker</shadedPattern>
                         </relocation>
                     </relocations>
                 </configuration>

@@ -1,10 +1,10 @@
-package fr.paulem.btm;
+package io.github.paulem.btm;
 
 import com.jeff_media.updatechecker.UpdateCheckSource;
 import com.jeff_media.updatechecker.UpdateChecker;
-import fr.paulem.btm.interfaces.IDamageSystem;
-import fr.paulem.btm.legacy.LegacyDamage;
-import fr.paulem.btm.newer.NewerDamage;
+import io.github.paulem.btm.interfaces.IDamageSystem;
+import io.github.paulem.btm.legacy.LegacyDamage;
+import io.github.paulem.btm.newer.NewerDamage;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.configuration.file.FileConfiguration;

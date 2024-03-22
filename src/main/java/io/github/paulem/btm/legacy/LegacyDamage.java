@@ -1,6 +1,6 @@
-package fr.paulem.btm.legacy;
+package io.github.paulem.btm.legacy;
 
-import fr.paulem.btm.interfaces.IDamageSystem;
+import io.github.paulem.btm.interfaces.IDamageSystem;
 import org.bukkit.inventory.ItemStack;
 
 public class LegacyDamage implements IDamageSystem {
