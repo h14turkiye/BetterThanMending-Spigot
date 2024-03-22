@@ -1,7 +1,12 @@
 name: BetterThanMending
 main: fr.paulem.btm.BTM
-version: 2.0
+version: 2.2
 website: paulem79.github.io
 author: Paulem
 description: A small quality of life tweak to the Mending enchantment
 api-version: 1.13
+
+permissions:
+  btm.use:
+    description: Allows to use the mending ability
+    default: true

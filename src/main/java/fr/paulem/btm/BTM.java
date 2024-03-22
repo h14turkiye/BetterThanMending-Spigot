@@ -1,5 +1,7 @@
 package fr.paulem.btm;
 
+import com.jeff_media.updatechecker.UpdateCheckSource;
+import com.jeff_media.updatechecker.UpdateChecker;
 import fr.paulem.btm.interfaces.IDamageSystem;
 import fr.paulem.btm.legacy.LegacyDamage;
 import fr.paulem.btm.newer.NewerDamage;
@@ -16,17 +18,27 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class BTM extends JavaPlugin implements Listener {
-    public static IDamageSystem damageSystem = Versioning.isPost17() ? new NewerDamage() : new LegacyDamage();
+    private static final String SPIGOT_RESOURCE_ID = "112248";
+
+    public static final IDamageSystem damageSystem = Versioning.isPost17() ? new NewerDamage() : new LegacyDamage();
     public static FileConfiguration config;
 
     @Override
     public void onEnable() {
+        new UpdateChecker(this, UpdateCheckSource.SPIGET, SPIGOT_RESOURCE_ID) // You can also use Spiget instead of Spigot - Spiget's API is usually much faster up to date.
+                .checkEveryXHours(24) // Check every 24 hours
+                .setChangelogLink(SPIGOT_RESOURCE_ID)
+                .setNotifyOpsOnJoin(true)
+                .checkNow(); // And check right now
+
         if(!Versioning.isPost9()) {
             getLogger().severe("You need to use a 1.9+ server! Mending isn't present in older versions!");
             setEnabled(false);
         }
+
         this.saveDefaultConfig();
         config = getConfig();
+
         getServer().getPluginManager().registerEvents(this, this);
         getLogger().info("Enabled!");
     }
@@ -39,6 +51,8 @@ public class BTM extends JavaPlugin implements Listener {
     @EventHandler
     public void onItemUse(PlayerInteractEvent e) {
         Player player = e.getPlayer();
+        if(!player.hasPermission("btm.use")) return;
+
         ItemStack item = player.getInventory().getItemInMainHand();
 
         if(item.getType() == Material.AIR) return;
