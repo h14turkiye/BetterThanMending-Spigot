@@ -1,4 +1,4 @@
-package io.github.paulem.btm;
+package io.github.paulem.btm.experience;
 
 import org.bukkit.entity.Player;
 

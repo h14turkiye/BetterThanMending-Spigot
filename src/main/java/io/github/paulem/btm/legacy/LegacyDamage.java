@@ -1,9 +1,9 @@
 package io.github.paulem.btm.legacy;
 
-import io.github.paulem.btm.interfaces.IDamageSystem;
+import io.github.paulem.btm.interfaces.DamageSystem;
 import org.bukkit.inventory.ItemStack;
 
-public class LegacyDamage implements IDamageSystem {
+public class LegacyDamage implements DamageSystem {
     @Override
     public boolean hasDamage(ItemStack item) {
         return (item.getType().getMaxDurability() - item.getDurability()) < item.getType().getMaxDurability();

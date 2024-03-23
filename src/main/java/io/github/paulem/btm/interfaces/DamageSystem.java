@@ -2,7 +2,7 @@ package io.github.paulem.btm.interfaces;
 
 import org.bukkit.inventory.ItemStack;
 
-public interface IDamageSystem {
+public interface DamageSystem {
     boolean hasDamage(ItemStack item);
 
     int getDamage(ItemStack item);

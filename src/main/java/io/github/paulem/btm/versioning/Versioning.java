@@ -1,4 +1,4 @@
-package io.github.paulem.btm;
+package io.github.paulem.btm.versioning;
 
 import org.bukkit.Bukkit;
 

@@ -2,8 +2,8 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>fr.paulem.btm</groupId>
-  <artifactId>BetterThanMending</artifactId>
-  <version>2.2</version>
+  <artifactId>BetterMending</artifactId>
+  <version>2.3</version>
   <build>
     <plugins>
       <plugin>
@@ -20,8 +20,12 @@
         <configuration>
           <relocations>
             <relocation>
+              <pattern>com.github.Anon8281.universalScheduler</pattern>
+              <shadedPattern>io.github.paulem.btm.libs.universalScheduler</shadedPattern>
+            </relocation>
+            <relocation>
               <pattern>com.jeff_media.updatechecker</pattern>
-              <shadedPattern>io.github.paulem.libs.updatechecker</shadedPattern>
+              <shadedPattern>io.github.paulem.btm.libs.updatechecker</shadedPattern>
             </relocation>
           </relocations>
         </configuration>
@@ -37,7 +41,25 @@
       <id>jeff-media-public</id>
       <url>https://repo.jeff-media.com/public/</url>
     </repository>
+    <repository>
+      <id>jitpack.io</id>
+      <url>https://jitpack.io</url>
+    </repository>
   </repositories>
+  <dependencies>
+    <dependency>
+      <groupId>org.jetbrains</groupId>
+      <artifactId>annotations</artifactId>
+      <version>24.1.0</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.spigotmc</groupId>
+      <artifactId>spigot-api</artifactId>
+      <version>1.20.4-R0.1-SNAPSHOT</version>
+      <scope>provided</scope>
+    </dependency>
+  </dependencies>
   <properties>
     <maven.compiler.target>8</maven.compiler.target>
     <maven.compiler.source>8</maven.compiler.source>
