@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>fr.paulem.btm</groupId>
   <artifactId>BetterMending</artifactId>
-  <version>2.3</version>
+  <version>2.4</version>
   <build>
     <plugins>
       <plugin>
@@ -18,6 +18,7 @@
           </execution>
         </executions>
         <configuration>
+          <shadedArtifactAttached>false</shadedArtifactAttached>
           <relocations>
             <relocation>
               <pattern>com.github.Anon8281.universalScheduler</pattern>
@@ -26,6 +27,10 @@
             <relocation>
               <pattern>com.jeff_media.updatechecker</pattern>
               <shadedPattern>io.github.paulem.btm.libs.updatechecker</shadedPattern>
+            </relocation>
+            <relocation>
+              <pattern>com.github.fierioziy.particlenativeapi</pattern>
+              <shadedPattern>io.github.paulem.btm.libs.particleapi</shadedPattern>
             </relocation>
           </relocations>
         </configuration>

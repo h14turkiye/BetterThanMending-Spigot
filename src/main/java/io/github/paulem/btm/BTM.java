@@ -3,6 +3,9 @@ package io.github.paulem.btm;
 import com.github.Anon8281.universalScheduler.UniversalRunnable;
 import com.github.Anon8281.universalScheduler.UniversalScheduler;
 import com.github.Anon8281.universalScheduler.scheduling.schedulers.TaskScheduler;
+import com.github.fierioziy.particlenativeapi.api.ParticleNativeAPI;
+import com.github.fierioziy.particlenativeapi.api.utils.ParticleException;
+import com.github.fierioziy.particlenativeapi.core.ParticleNativeCore;
 import com.jeff_media.updatechecker.UpdateCheckSource;
 import com.jeff_media.updatechecker.UpdateChecker;
 import io.github.paulem.btm.configuration.ConfigMigration;
@@ -11,9 +14,7 @@ import io.github.paulem.btm.interfaces.DamageSystem;
 import io.github.paulem.btm.legacy.LegacyDamage;
 import io.github.paulem.btm.newer.NewerDamage;
 import io.github.paulem.btm.versioning.Versioning;
-import org.bukkit.Bukkit;
-import org.bukkit.Material;
-import org.bukkit.Sound;
+import org.bukkit.*;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
@@ -32,7 +33,8 @@ import java.util.stream.Collectors;
 public class BTM extends JavaPlugin implements Listener {
     private static final String SPIGOT_RESOURCE_ID = "112248";
     private static TaskScheduler scheduler;
-    public static final int CONFIG_VERSION = 2;
+
+    private static ParticleNativeAPI api;
 
     public static final DamageSystem damageSystem = Versioning.isPost17() ? new NewerDamage() : new LegacyDamage();
     public static FileConfiguration config;
@@ -60,6 +62,12 @@ public class BTM extends JavaPlugin implements Listener {
         getServer().getPluginManager().registerEvents(this, this);
         getLogger().info("Enabled!");
 
+        try {
+            api = ParticleNativeCore.loadAPI(this);
+        } catch (ParticleException e) {// optional runtime exception catch
+            api = null;
+        }
+
         long delay = config.getLong("delay", 40L);
         boolean repairFullInventory = config.getBoolean("repairFullInventory", true);
 
@@ -80,12 +88,12 @@ public class BTM extends JavaPlugin implements Listener {
                         if (repairFullInventory) {
                             for (ItemStack item : damageables) {
                                 if (item != null)
-                                    repairItem(player, item, false);
+                                    repairItem(player, item, false, false);
                             }
                         } else {
                             ItemStack item = damageables.get(ThreadLocalRandom.current().nextInt(damageables.size()));
                             if (item != null)
-                                repairItem(player, item, false);
+                                repairItem(player, item, false, false);
                         }
                     }
                 }
@@ -119,12 +127,12 @@ public class BTM extends JavaPlugin implements Listener {
         // If it doesn't have any damage, return
         if(!damageSystem.hasDamage(item)) return;
 
-        repairItem(player, item, config.getBoolean("playSound", true));
+        repairItem(player, item, config.getBoolean("playSound", true), config.getBoolean("playEffect", true));
 
         e.setCancelled(true);
     }
 
-    public static void repairItem(Player player, ItemStack item, boolean playSound){
+    public static void repairItem(Player player, ItemStack item, boolean playSound, boolean playParticle){
 
         double ratio = item.getEnchantmentLevel(Enchantment.MENDING) * config.getDouble("ratio", 2.0);
         int playerXP = ExperienceSystem.getPlayerXP(player);
@@ -148,6 +156,31 @@ public class BTM extends JavaPlugin implements Listener {
                     (float) config.getDouble("soundVolume", 1),
                     (float) config.getDouble("soundPitch", 1));
 
+        // Should play particle?
+        if(playParticle)
+            summonCircle(player, 3);
+    }
+
+    public static void summonCircle(Player player, int size) {
+        Location location = player.getEyeLocation();
+        if(location.getWorld() == null) return;
+
+        for (int d = 0; d <= 90; d += 1) {
+            Location particleLoc = new Location(location.getWorld(), location.getX(), location.getY(), location.getZ());
+            particleLoc.setX(location.getX() + Math.cos(d) * size);
+            particleLoc.setZ(location.getZ() + Math.sin(d) * size);
+            api.LIST_1_8.REDSTONE
+                    .packetColored(false, particleLoc,
+                            checkRGB(config.getInt("color.red", 144), 144),
+                            checkRGB(config.getInt("color.green", 238), 238),
+                            checkRGB(config.getInt("color.blue", 144), 144))
+                    .sendTo(player);
+        }
+    }
+
+    public static int checkRGB(int color, int defaultColor){
+        if(color < 0 || color > 255) return defaultColor;
+        else return color;
     }
 
     public static TaskScheduler getScheduler() {

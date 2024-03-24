@@ -38,5 +38,16 @@ soundVolume: 1
 # The speed of the sound, 1 is default, smaller than 1 is slower
 soundPitch: 1
 
+# -------- EFFECT --------
+# Enable or disable the effect
+playEffect: true
+
+# The color used in the effect (RGB, each value need to be between 0 and 255)
+# default (in the order of color): 144, 238, 144
+color:
+  red: 144
+  green: 238
+  blue: 144
+
 # Please, do not touch!
-version: 2
+version: 3

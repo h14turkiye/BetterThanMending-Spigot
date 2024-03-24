@@ -6,7 +6,7 @@
 
     <groupId>fr.paulem.btm</groupId>
     <artifactId>BetterMending</artifactId>
-    <version>2.3</version>
+    <version>2.4</version>
 
     <repositories>
         <repository>
@@ -48,6 +48,12 @@
             <version>0.1.6</version>
             <scope>compile</scope>
         </dependency>
+        <dependency>
+            <groupId>com.github.fierioziy.particlenativeapi</groupId>
+            <artifactId>ParticleNativeAPI-core</artifactId>
+            <version>4.1.0</version>
+            <scope>compile</scope>
+        </dependency>
     </dependencies>
 
     <build>
@@ -57,6 +63,8 @@
                 <artifactId>maven-shade-plugin</artifactId>
                 <version>3.5.2</version>
                 <configuration>
+                    <shadedArtifactAttached>false</shadedArtifactAttached>
+
                     <relocations>
                         <relocation>
                             <pattern>com.github.Anon8281.universalScheduler</pattern>
@@ -65,6 +73,10 @@
                         <relocation>
                             <pattern>com.jeff_media.updatechecker</pattern>
                             <shadedPattern>io.github.paulem.btm.libs.updatechecker</shadedPattern>
+                        </relocation>
+                        <relocation>
+                            <pattern>com.github.fierioziy.particlenativeapi</pattern>
+                            <shadedPattern>io.github.paulem.btm.libs.particleapi</shadedPattern>
                         </relocation>
                     </relocations>
                 </configuration>
