@@ -49,5 +49,11 @@ color:
   green: 238
   blue: 144
 
+# The offset of the effect, from the player Eyes location, can be a negative value
+offset:
+  x: 0.0
+  y: 0.0
+  z: 0.0
+
 # Please, do not touch!
-version: 3
+version: 4

@@ -162,7 +162,13 @@ public class BTM extends JavaPlugin implements Listener {
     }
 
     public static void summonCircle(Player player, int size) {
-        Location location = player.getEyeLocation();
+        Location location = player.getEyeLocation()
+                .add(
+                        config.getDouble("offset.x", 0),
+                        config.getDouble("offset.y", 0),
+                        config.getDouble("offset.z", 0)
+                );
+
         if(location.getWorld() == null) return;
 
         for (int d = 0; d <= 90; d += 1) {
