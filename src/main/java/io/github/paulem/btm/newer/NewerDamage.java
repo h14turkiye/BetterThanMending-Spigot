@@ -1,10 +1,10 @@
 package io.github.paulem.btm.newer;
 
-import io.github.paulem.btm.interfaces.DamageSystem;
+import io.github.paulem.btm.interfaces.DamageManager;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.Damageable;
 
-public class NewerDamage implements DamageSystem {
+public class NewerDamage implements DamageManager {
     @Override
     public boolean hasDamage(ItemStack item) {
         return ((Damageable) item.getItemMeta()).hasDamage();

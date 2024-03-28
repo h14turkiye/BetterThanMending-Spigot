@@ -1,22 +1,21 @@
-package io.github.paulem.btm.configuration;
+package io.github.paulem.btm.managers;
 
-import com.google.common.base.Charsets;
 import io.github.paulem.btm.BTM;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.*;
 
-public class ConfigMigration {
+public class ConfigManager {
     private final BTM plugin;
 
-    public ConfigMigration(BTM plugin){
+    public ConfigManager(BTM plugin){
         this.plugin = plugin;
     }
 
     public void migrate(){
         FileConfiguration config = plugin.getConfig();
-        FileConfiguration embeddedConfig = YamlConfiguration.loadConfiguration(new InputStreamReader(plugin.getResource("config.yml"), Charsets.UTF_8));
+        FileConfiguration embeddedConfig = YamlConfiguration.loadConfiguration(new InputStreamReader(plugin.getResource("config.yml")));
 
         int detectedVersion = config.getInt("version", 0);
         int embeddedDetectedVersion = embeddedConfig.getInt("version", 0);
