@@ -4,7 +4,7 @@
 # true: auto-repair false: default repair
 auto-repair: false
 
-# Configure the cooldown
+# Configure the cooldown (suggested by Kad_L)
 cooldown:
   # The cooldown between each use of the ability per player. This isn't applied in auto-repair
   # The cooldown in seconds (default: 1)
@@ -17,6 +17,9 @@ cooldown:
   # True if the cooldown should do a sound
   # default: true
   sound: true
+
+  # The cooldown text, $s is the actual remaining seconds
+  text: "&4Please wait $s seconds before using this ability!"
 
 # The removed experience when the mending ability is used
 # You'd better use ratio instead
@@ -56,7 +59,7 @@ soundPitch: 1
 # Enable or disable the effect
 playEffect: true
 
-# The effect range from the player
+# The effect range from the player (suggested by Kad_L)
 range: 3
 
 # The color used in the effect (RGB, each value need to be between 0 and 255)
@@ -73,4 +76,4 @@ offset:
   z: 0.0
 
 # Please, do not touch!
-version: 5
+version: 6

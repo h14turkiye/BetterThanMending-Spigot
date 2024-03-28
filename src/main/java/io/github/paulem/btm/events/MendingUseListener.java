@@ -3,6 +3,7 @@ package io.github.paulem.btm.events;
 import io.github.paulem.btm.interfaces.DamageManager;
 import io.github.paulem.btm.managers.CooldownManager;
 import io.github.paulem.btm.managers.RepairManager;
+import io.github.paulem.btm.versioning.Versioning;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -19,6 +20,9 @@ import java.time.Duration;
 import java.util.UUID;
 
 public class MendingUseListener implements Listener {
+    private static final Sound ENDERMAN_TELEPORT_SOUND = Versioning.isPost13() ?
+            Sound.valueOf(Sound.class, "ENTITY_ENDERMAN_TELEPORT") : Sound.valueOf(Sound.class, "ENTITY_ENDERMEN_TELEPORT");
+
     private final FileConfiguration config;
     private final DamageManager damageManager;
     private final RepairManager repairManager;
@@ -62,8 +66,21 @@ public class MendingUseListener implements Listener {
 
             e.setCancelled(true);
         } else {
-            if(config.getBoolean("cooldown.message", true)) player.sendMessage(ChatColor.DARK_RED + "Please wait " + timeLeft.getSeconds() + " seconds before using this ability!");
-            if(config.getBoolean("cooldown.sound", true)) player.playSound(player.getLocation(), Sound.ENTITY_ENDERMAN_TELEPORT, 1, 1);
+            if(config.getBoolean("cooldown.message", true)) {
+                String text = config.getString(
+                        "cooldown.text",
+                        ChatColor.DARK_RED + "Please wait " + timeLeft.getSeconds() + " seconds before using this ability!"
+
+                        ).replace("&", "§")
+                        .replace("$s", ""+timeLeft.getSeconds());
+
+                player.sendMessage(text);
+            }
+            if(config.getBoolean("cooldown.sound", true))
+                player.playSound(
+                        player.getLocation(),
+                        ENDERMAN_TELEPORT_SOUND,
+                        1, 1);
         }
     }
 }
