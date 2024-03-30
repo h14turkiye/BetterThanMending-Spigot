@@ -75,5 +75,9 @@ offset:
   y: 0.0
   z: 0.0
 
+## -------- MISCELLANEOUS --------
+# Disable or not statistics (help me to make my plugin better!)
+bstat: true
+
 # Please, do not touch!
-version: 6
+version: 7

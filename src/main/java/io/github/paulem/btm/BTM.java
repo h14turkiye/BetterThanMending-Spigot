@@ -11,11 +11,13 @@ import io.github.paulem.btm.legacy.LegacyDamage;
 import io.github.paulem.btm.managers.RepairManager;
 import io.github.paulem.btm.newer.NewerDamage;
 import io.github.paulem.btm.versioning.Versioning;
+import org.bstats.bukkit.Metrics;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class BTM extends JavaPlugin {
     private static final String SPIGOT_RESOURCE_ID = "112248";
+    private static final int BSTAT_ID = 21472;
     public static FileConfiguration config;
 
     private static TaskScheduler scheduler;
@@ -49,6 +51,10 @@ public class BTM extends JavaPlugin {
 
         if(config.getBoolean("auto-repair", false))
             REPAIR_MANAGER.initAutoRepair();
+
+        if(config.getBoolean("bstat", true)){
+            Metrics metrics = new Metrics(this, BSTAT_ID);
+        }
     }
 
     @Override
