@@ -15,6 +15,8 @@ import org.bstats.bukkit.Metrics;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
+// TODO: Improve Uses work
+// TODO: Make the number of uses reset after cooldown.time seconds passed
 public class BTM extends JavaPlugin {
     private static final String SPIGOT_RESOURCE_ID = "112248";
     private static final int BSTAT_ID = 21472;

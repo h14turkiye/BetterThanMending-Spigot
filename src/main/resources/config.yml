@@ -6,9 +6,12 @@ auto-repair: false
 
 # Configure the cooldown (suggested by Kad_L)
 cooldown:
-  # The cooldown between each use of the ability per player. This isn't applied in auto-repair
-  # The cooldown in seconds (default: 1)
-  time: 1
+  # The cooldown between each use of the ability per player. This isn't applied to auto-repair
+  # The cooldown in seconds (0 = disabled) (default: 0)
+  time: 0
+
+  # Number of uses before the cooldown acts (default: 3)
+  uses: 3
 
   # True if the cooldown message should be shown
   # default: true
@@ -80,4 +83,4 @@ offset:
 bstat: true
 
 # Please, do not touch!
-version: 7
+version: 8
