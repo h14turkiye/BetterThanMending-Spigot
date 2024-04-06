@@ -51,6 +51,8 @@ public class PreventDestroyListener extends NeedManagersListenener {
     public boolean isPreventNeeded(Player player){
         if(!player.hasPermission("btm.use")) return false;
 
+        if(!config.getBoolean("prevent-destroy", false)) return false;
+
         ItemStack item = player.getInventory().getItemInMainHand();
 
         if(item.getType() == Material.AIR) return false;
