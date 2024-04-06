@@ -4,7 +4,8 @@ import com.github.Anon8281.universalScheduler.UniversalScheduler;
 import com.github.Anon8281.universalScheduler.scheduling.schedulers.TaskScheduler;
 import com.jeff_media.updatechecker.UpdateCheckSource;
 import com.jeff_media.updatechecker.UpdateChecker;
-import io.github.paulem.btm.events.MendingUseListener;
+import io.github.paulem.btm.listeners.MendingUseListener;
+import io.github.paulem.btm.listeners.PreventDestroyListener;
 import io.github.paulem.btm.managers.ConfigManager;
 import io.github.paulem.btm.interfaces.DamageManager;
 import io.github.paulem.btm.legacy.LegacyDamage;
@@ -49,13 +50,14 @@ public class BTM extends JavaPlugin {
         }
 
         getServer().getPluginManager().registerEvents(new MendingUseListener(config, DAMAGE_MANAGER, REPAIR_MANAGER), this);
+        getServer().getPluginManager().registerEvents(new PreventDestroyListener(config, DAMAGE_MANAGER, REPAIR_MANAGER), this);
         getLogger().info("Enabled!");
 
         if(config.getBoolean("auto-repair", false))
             REPAIR_MANAGER.initAutoRepair();
 
         if(config.getBoolean("bstat", true)){
-            Metrics metrics = new Metrics(this, BSTAT_ID);
+            new Metrics(this, BSTAT_ID);
         }
     }
 

@@ -91,4 +91,15 @@ public class RepairManager {
         if(playParticle)
             effectManager.summonCircle(player, config.getInt("range", 3));
     }
+
+    public boolean canRepairItem(Player player, ItemStack item){
+        double ratio = item.getEnchantmentLevel(Enchantment.MENDING) * config.getDouble("ratio", 2.0);
+        int playerXP = ExperienceSystem.getPlayerXP(player);
+
+        int itemDamages = damageManager.getDamage(item);
+
+        int expValue = config.getInt("expValue", 20);
+
+        return (playerXP >= 30 && itemDamages >= expValue * ratio) || (playerXP >= expValue / 10);
+    }
 }

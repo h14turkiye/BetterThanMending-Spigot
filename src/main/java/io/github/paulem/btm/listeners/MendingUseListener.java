@@ -1,7 +1,6 @@
-package io.github.paulem.btm.events;
+package io.github.paulem.btm.listeners;
 
 import io.github.paulem.btm.interfaces.DamageManager;
-import io.github.paulem.btm.managers.CooldownManager;
 import io.github.paulem.btm.managers.RepairManager;
 import io.github.paulem.btm.versioning.Versioning;
 import org.bukkit.ChatColor;
@@ -11,7 +10,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
@@ -21,27 +20,17 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-public class MendingUseListener implements Listener {
+public class MendingUseListener extends NeedManagersListenener {
     private static final Sound ENDERMAN_TELEPORT_SOUND = Versioning.isPost13() ?
             Sound.valueOf(Sound.class, "ENTITY_ENDERMAN_TELEPORT") : Sound.valueOf(Sound.class, "ENTITY_ENDERMEN_TELEPORT");
-
-    private final FileConfiguration config;
-    private final DamageManager damageManager;
-    private final RepairManager repairManager;
-    private final CooldownManager cooldownManager;
 
     private final Map<UUID, Integer> cooldownUses = new HashMap<>();
 
     public MendingUseListener(FileConfiguration config, DamageManager damageManager, RepairManager repairManager){
-        this.config = config;
-        this.damageManager = damageManager;
-        this.repairManager = repairManager;
-
-        int cooldown = config.getInt("cooldown.time", 0);
-        this.cooldownManager = new CooldownManager(cooldown);
+        super(config, damageManager, repairManager);
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.HIGH)
     public void onItemUse(PlayerInteractEvent e) {
         Player player = e.getPlayer();
 

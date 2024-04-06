@@ -4,6 +4,10 @@
 # true: auto-repair false: default repair
 auto-repair: false
 
+# Prevent mending item destroy when you don't have enough experience
+# true: prevent destroy false: default destroy
+prevent-destroy: false
+
 # Configure the cooldown (suggested by Kad_L)
 cooldown:
   # The cooldown between each use of the ability per player. This isn't applied to auto-repair
@@ -83,4 +87,4 @@ offset:
 bstat: true
 
 # Please, do not touch!
-version: 8
+version: 9
