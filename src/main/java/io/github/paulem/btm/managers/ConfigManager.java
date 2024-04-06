@@ -29,6 +29,7 @@ public class ConfigManager {
 
         plugin.getConfig().options().copyDefaults(true);
         plugin.getConfig().setDefaults(embeddedConfig);
+        plugin.getConfig().set("version", embeddedDetectedVersion);
         plugin.saveConfig();
 
         plugin.getLogger().info("Your configuration has been updated! You can find more informations about new option on the plugin resource page!");
