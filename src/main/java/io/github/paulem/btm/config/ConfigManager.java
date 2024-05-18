@@ -1,4 +1,4 @@
-package io.github.paulem.btm.managers;
+package io.github.paulem.btm.config;
 
 import io.github.paulem.btm.BTM;
 import org.bukkit.configuration.file.FileConfiguration;

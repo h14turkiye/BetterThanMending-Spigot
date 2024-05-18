@@ -49,9 +49,9 @@ public class PreventDestroyListener extends NeedManagersListenener {
     }
 
     public boolean isPreventNeeded(Player player){
-        if(!player.hasPermission("btm.use")) return false;
-
         if(!config.getBoolean("prevent-destroy", false)) return false;
+
+        if(!player.hasPermission("btm.use")) return false;
 
         ItemStack item = player.getInventory().getItemInMainHand();
 

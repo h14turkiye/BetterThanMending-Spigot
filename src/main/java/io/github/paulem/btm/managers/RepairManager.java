@@ -12,6 +12,7 @@ import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
@@ -21,13 +22,13 @@ public class RepairManager {
     private final FileConfiguration config;
 
     private final DamageManager damageManager;
-    private final EffectManager effectManager;
+    private final ParticleManager particleManager;
 
     public RepairManager(BTM plugin, DamageManager damageManager){
         this.config = plugin.getConfig();
 
         this.damageManager = damageManager;
-        this.effectManager = new EffectManager(plugin);
+        this.particleManager = new ParticleManager(plugin);
     }
 
     public void initAutoRepair(){
@@ -88,8 +89,9 @@ public class RepairManager {
                     (float) config.getDouble("soundPitch", 1));
 
         // Should play particle?
-        if(playParticle)
-            effectManager.summonCircle(player, config.getInt("range", 3));
+        if(playParticle) {
+            particleManager.summonCircle(player, config.getInt("range", 3));
+        }
     }
 
     public boolean canRepairItem(Player player, ItemStack item){

@@ -8,11 +8,11 @@ import org.bukkit.Location;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
-public class EffectManager {
+public class ParticleManager {
     private final FileConfiguration config;
     private ParticleNativeAPI api;
 
-    public EffectManager(BTM plugin){
+    public ParticleManager(BTM plugin){
         this.config = plugin.getConfig();
 
         try {
@@ -32,10 +32,11 @@ public class EffectManager {
 
         if(location.getWorld() == null) return;
 
+        Location particleLoc = new Location(location.getWorld(), location.getX(), location.getY(), location.getZ());
         for (int d = 0; d <= 90; d += 1) {
-            Location particleLoc = new Location(location.getWorld(), location.getX(), location.getY(), location.getZ());
             particleLoc.setX(location.getX() + Math.cos(d) * size);
             particleLoc.setZ(location.getZ() + Math.sin(d) * size);
+
             api.LIST_1_8.REDSTONE
                     .packetColored(false, particleLoc,
                             checkRGB(config.getInt("color.red", 144), 144),
