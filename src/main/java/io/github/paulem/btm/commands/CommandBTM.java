@@ -1,12 +1,9 @@
 package io.github.paulem.btm.commands;
 
-import io.github.paulem.btm.BTM;
 import io.github.paulem.btm.config.PlayerDataConfig;
 import org.bukkit.ChatColor;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
-import org.bukkit.command.CommandSender;
-import org.bukkit.command.TabCompleter;
+import org.bukkit.command.*;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -15,15 +12,16 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
-public class CommandBTM implements CommandExecutor, TabCompleter {
-    public static PlayerDataConfig playerDataConfig;
+public class CommandBTM implements TabExecutor {
 
-    public final BTM plugin;
+    public final int configVersion;
+    public final PlayerDataConfig playerDataConfig;
+    public final String pluginVersion;
 
-    public CommandBTM(BTM plugin) {
-        this.plugin = plugin;
-
-        playerDataConfig = new PlayerDataConfig(this.plugin);
+    public CommandBTM(int configVersion, PlayerDataConfig playerDataConfig, String pluginVersion) {
+        this.configVersion = configVersion;
+        this.playerDataConfig = playerDataConfig;
+        this.pluginVersion = pluginVersion;
     }
 
     @Override
@@ -45,7 +43,7 @@ public class CommandBTM implements CommandExecutor, TabCompleter {
             return true;
         }
 
-        sender.sendMessage(ChatColor.BLUE + "Running BetterThanMending " + plugin.getDescription().getVersion() + " with config version " + plugin.getConfig().getInt("version", 0));
+        sender.sendMessage(ChatColor.BLUE + "Running BetterThanMending " + pluginVersion + " with config version " + configVersion);
         return true;
     }
 

@@ -1,6 +1,7 @@
 package io.github.paulem.btm.listeners;
 
-import io.github.paulem.btm.interfaces.DamageManager;
+import io.github.paulem.btm.damage.DamageManager;
+import io.github.paulem.btm.listeners.extendables.ManagersListener;
 import io.github.paulem.btm.managers.RepairManager;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -14,7 +15,7 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 
-public class PreventDestroyListener extends NeedManagersListenener {
+public class PreventDestroyListener extends ManagersListener {
     public PreventDestroyListener(FileConfiguration config, DamageManager damageManager, RepairManager repairManager){
         super(config, damageManager, repairManager);
     }

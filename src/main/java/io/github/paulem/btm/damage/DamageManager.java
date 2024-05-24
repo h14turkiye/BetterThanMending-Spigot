@@ -1,4 +1,4 @@
-package io.github.paulem.btm.interfaces;
+package io.github.paulem.btm.damage;
 
 import org.bukkit.inventory.ItemStack;
 

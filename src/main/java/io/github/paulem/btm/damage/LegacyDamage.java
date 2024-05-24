@@ -1,6 +1,5 @@
-package io.github.paulem.btm.legacy;
+package io.github.paulem.btm.damage;
 
-import io.github.paulem.btm.interfaces.DamageManager;
 import org.bukkit.inventory.ItemStack;
 
 public class LegacyDamage implements DamageManager {

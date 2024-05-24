@@ -1,9 +1,10 @@
 package io.github.paulem.btm.managers;
 
 import com.github.Anon8281.universalScheduler.UniversalRunnable;
-import io.github.paulem.btm.BTM;
-import io.github.paulem.btm.experience.ExperienceSystem;
-import io.github.paulem.btm.interfaces.DamageManager;
+import com.github.Anon8281.universalScheduler.UniversalScheduler;
+import com.github.Anon8281.universalScheduler.scheduling.schedulers.TaskScheduler;
+import io.github.paulem.btm.BetterMending;
+import io.github.paulem.btm.damage.DamageManager;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -12,7 +13,6 @@ import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
@@ -20,21 +20,23 @@ import java.util.stream.Collectors;
 
 public class RepairManager {
     private final FileConfiguration config;
+    private final TaskScheduler scheduler;
 
     private final DamageManager damageManager;
     private final ParticleManager particleManager;
 
-    public RepairManager(BTM plugin, DamageManager damageManager){
-        this.config = plugin.getConfig();
+    public RepairManager(BetterMending plugin, FileConfiguration config, DamageManager damageManager){
+        this.config = config;
+        this.scheduler = UniversalScheduler.getScheduler(plugin);
 
         this.damageManager = damageManager;
-        this.particleManager = new ParticleManager(plugin);
+        this.particleManager = new ParticleManager(plugin, config);
     }
 
     public void initAutoRepair(){
         long delay = config.getLong("delay", 40L);
 
-        BTM.getScheduler().runTaskTimer(new UniversalRunnable() {
+        scheduler.runTaskTimer(new UniversalRunnable() {
             @Override
             public void run() {
                 for(Player player : Bukkit.getOnlinePlayers()){
@@ -47,6 +49,7 @@ public class RepairManager {
                                     i.containsEnchantment(Enchantment.MENDING) &&
                                     damageManager.isDamageable(i) &&
                                     damageManager.hasDamage(i)).collect(Collectors.toList());
+
                     if(!damageables.isEmpty()) {
                         if (config.getBoolean("repairFullInventory", true)) {
                             for (ItemStack item : damageables) {
@@ -67,7 +70,7 @@ public class RepairManager {
     public void repairItem(Player player, ItemStack item, boolean playSound, boolean playParticle){
 
         double ratio = item.getEnchantmentLevel(Enchantment.MENDING) * config.getDouble("ratio", 2.0);
-        int playerXP = ExperienceSystem.getPlayerXP(player);
+        int playerXP = ExperienceManager.getPlayerXP(player);
 
         int itemDamages = damageManager.getDamage(item);
 
@@ -75,10 +78,10 @@ public class RepairManager {
 
         if (playerXP >= 30 && itemDamages >= expValue * ratio) {
             damageManager.setDamage(item, itemDamages - (int) (expValue * ratio));
-            ExperienceSystem.changePlayerExp(player, -expValue);
+            ExperienceManager.changePlayerExp(player, -expValue);
         } else if (playerXP >= expValue/10) {
-            damageManager.setDamage(item, itemDamages - (int) (expValue/10 * ratio));
-            ExperienceSystem.changePlayerExp(player, -expValue/10);
+            damageManager.setDamage(item, itemDamages - (int) ((double) expValue /10 * ratio));
+            ExperienceManager.changePlayerExp(player, -expValue/10);
         } else return;
 
         // Should play sound?
@@ -96,7 +99,7 @@ public class RepairManager {
 
     public boolean canRepairItem(Player player, ItemStack item){
         double ratio = item.getEnchantmentLevel(Enchantment.MENDING) * config.getDouble("ratio", 2.0);
-        int playerXP = ExperienceSystem.getPlayerXP(player);
+        int playerXP = ExperienceManager.getPlayerXP(player);
 
         int itemDamages = damageManager.getDamage(item);
 

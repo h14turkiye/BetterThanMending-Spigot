@@ -1,6 +1,6 @@
 package io.github.paulem.btm.config;
 
-import io.github.paulem.btm.BTM;
+import io.github.paulem.btm.BetterMending;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 
@@ -11,7 +11,7 @@ public class PlayerDataConfig {
     private final File dataFile;
     private final YamlConfiguration data;
 
-    public PlayerDataConfig(BTM plugin) {
+    public PlayerDataConfig(BetterMending plugin) {
         this.dataFile = new File(plugin.getDataFolder(), "data.yml");
         try {
             this.dataFile.createNewFile();

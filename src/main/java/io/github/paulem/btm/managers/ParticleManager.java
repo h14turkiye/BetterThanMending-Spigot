@@ -3,7 +3,7 @@ package io.github.paulem.btm.managers;
 import com.github.fierioziy.particlenativeapi.api.ParticleNativeAPI;
 import com.github.fierioziy.particlenativeapi.api.utils.ParticleException;
 import com.github.fierioziy.particlenativeapi.core.ParticleNativeCore;
-import io.github.paulem.btm.BTM;
+import io.github.paulem.btm.BetterMending;
 import org.bukkit.Location;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
@@ -12,8 +12,8 @@ public class ParticleManager {
     private final FileConfiguration config;
     private ParticleNativeAPI api;
 
-    public ParticleManager(BTM plugin){
-        this.config = plugin.getConfig();
+    public ParticleManager(BetterMending plugin, FileConfiguration config){
+        this.config = config;
 
         try {
             this.api = ParticleNativeCore.loadAPI(plugin);

@@ -1,5 +1,5 @@
 name: BetterMending
-main: io.github.paulem.btm.BTM
+main: io.github.paulem.btm.BetterMending
 version: 2.6.3
 website: paulem79.github.io
 author: Paulem

@@ -19,8 +19,9 @@ public class CooldownManager {
 
     // Check if cooldown has expired
     public boolean hasCooldown(UUID key) {
-        Instant cooldown = map.get(key);
-        return cooldown != null && Instant.now().isBefore(cooldown);
+        Instant now = Instant.now();
+        Instant cooldown = map.getOrDefault(key, now);
+        return now.isBefore(cooldown);
     }
 
     // Remove cooldown
@@ -30,13 +31,10 @@ public class CooldownManager {
 
     // Get remaining cooldown time
     public Duration getRemainingCooldown(UUID key) {
-        Instant cooldown = map.get(key);
         Instant now = Instant.now();
-        if (cooldown != null && now.isBefore(cooldown)) {
-            return Duration.between(now, cooldown);
-        } else {
-            return Duration.ZERO;
-        }
+        Instant cooldown = map.getOrDefault(key, now);
+
+        return now.isBefore(cooldown) ? Duration.between(now, cooldown) : Duration.ZERO;
     }
 
     public int getDefaultCooldown() {

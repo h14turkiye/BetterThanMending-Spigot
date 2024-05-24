@@ -1,7 +1,8 @@
 package io.github.paulem.btm.listeners;
 
-import io.github.paulem.btm.commands.CommandBTM;
-import io.github.paulem.btm.interfaces.DamageManager;
+import io.github.paulem.btm.config.PlayerDataConfig;
+import io.github.paulem.btm.damage.DamageManager;
+import io.github.paulem.btm.listeners.extendables.DataConfigManagersListener;
 import io.github.paulem.btm.managers.RepairManager;
 import io.github.paulem.btm.versioning.Versioning;
 import org.bukkit.ChatColor;
@@ -15,20 +16,21 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.NotNull;
 
 import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-public class MendingUseListener extends NeedManagersListenener {
+public class MendingUseListener extends DataConfigManagersListener {
     private static final Sound ENDERMAN_TELEPORT_SOUND = Versioning.isLegacy() ?
             Sound.valueOf(Sound.class, "ENTITY_ENDERMEN_TELEPORT") : Sound.valueOf(Sound.class, "ENTITY_ENDERMAN_TELEPORT");
 
     private final Map<UUID, Integer> cooldownUses = new HashMap<>();
 
-    public MendingUseListener(FileConfiguration config, DamageManager damageManager, RepairManager repairManager){
-        super(config, damageManager, repairManager);
+    public MendingUseListener(@NotNull FileConfiguration config, DamageManager damageManager, RepairManager repairManager, PlayerDataConfig playerDataConfig) {
+        super(config, damageManager, repairManager, playerDataConfig);
     }
 
     @EventHandler(priority = EventPriority.HIGH)
@@ -37,7 +39,7 @@ public class MendingUseListener extends NeedManagersListenener {
 
         if(!player.hasPermission("btm.use")) return;
 
-        if(!CommandBTM.playerDataConfig.getPlayerOrDefault(player, true)) return;
+        if(!playerDataConfig.getPlayerOrDefault(player, true)) return;
 
         ItemStack item = player.getInventory().getItemInMainHand();
 

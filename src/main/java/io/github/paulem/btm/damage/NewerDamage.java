@@ -1,6 +1,5 @@
-package io.github.paulem.btm.newer;
+package io.github.paulem.btm.damage;
 
-import io.github.paulem.btm.interfaces.DamageManager;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.Damageable;
 

@@ -1,8 +1,8 @@
-package io.github.paulem.btm.experience;
+package io.github.paulem.btm.managers;
 
 import org.bukkit.entity.Player;
 
-public class ExperienceSystem {
+public class ExperienceManager {
     public static void changePlayerExp(Player player, int exp){
         int currentExp = getPlayerXP(player);
 

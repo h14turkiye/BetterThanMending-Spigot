@@ -1,15 +1,15 @@
 package io.github.paulem.btm.config;
 
-import io.github.paulem.btm.BTM;
+import io.github.paulem.btm.BetterMending;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.*;
 
 public class ConfigManager {
-    private final BTM plugin;
+    private final BetterMending plugin;
 
-    public ConfigManager(BTM plugin){
+    public ConfigManager(BetterMending plugin){
         this.plugin = plugin;
     }
 
