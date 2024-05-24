@@ -27,9 +27,9 @@ public class ConfigManager {
 
         plugin.getLogger().warning("Your configuration is outdated! Upgrading...");
 
-        plugin.getConfig().options().copyDefaults(true);
-        plugin.getConfig().setDefaults(embeddedConfig);
-        plugin.getConfig().set("version", embeddedDetectedVersion);
+        config.options().copyDefaults(true);
+        config.setDefaults(embeddedConfig);
+        config.set("version", embeddedDetectedVersion);
         plugin.saveConfig();
 
         plugin.getLogger().info("Your configuration has been updated! You can find more informations about new option on the plugin resource page!");
