@@ -24,6 +24,7 @@ public class BetterMending extends JavaPlugin {
         if(!Versioning.isPost9()) {
             getLogger().severe("You need to use a 1.9+ server! Mending isn't present in older versions!");
             setEnabled(false);
+            return;
         }
 
         saveDefaultConfig();
