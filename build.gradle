@@ -1,10 +1,10 @@
 plugins {
     id 'java'
-    id 'com.github.johnrengelman.shadow' version '8.+'
+    id 'io.github.goooler.shadow' version '8.+'
 }
 
 group = 'io.github.paulem.btm'
-version = '2.6.4'
+version = '2.6.4.1'
 
 repositories {
     mavenCentral()
@@ -25,9 +25,6 @@ repositories {
 }
 
 dependencies {
-    testImplementation platform('org.junit:junit-bom:5.10.2')
-    testImplementation 'org.junit.jupiter:junit-jupiter'
-
     implementation 'com.jeff_media:SpigotUpdateChecker:3.+'
     implementation 'com.github.Anon8281:UniversalScheduler:0.1.6'
     implementation 'com.github.fierioziy.particlenativeapi:ParticleNativeAPI-core:4.+'
@@ -35,10 +32,6 @@ dependencies {
     compileOnly 'org.jetbrains:annotations:24.+'
     compileOnly 'org.spigotmc:spigot-api:1.20.4-R0.1-SNAPSHOT'
 }
-
-/*java {
-    withSourcesJar()
-}*/
 
 compileJava {
     options.encoding = "UTF-8"
@@ -54,8 +47,4 @@ shadowJar {
     relocate 'com.jeff_media.updatechecker', 'io.github.paulem.btm.libs.updatechecker'
     relocate 'com.github.Anon8281.universalScheduler', 'io.github.paulem.btm.libs.universalScheduler'
     relocate 'com.github.fierioziy.particlenativeapi', 'io.github.paulem.btm.libs.particleapi'
-}
-
-test {
-    useJUnitPlatform()
 }

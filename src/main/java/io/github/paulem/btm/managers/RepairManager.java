@@ -48,18 +48,23 @@ public class RepairManager {
                                     i.getType() != Material.AIR &&
                                     i.containsEnchantment(Enchantment.MENDING) &&
                                     damageManager.isDamageable(i) &&
-                                    damageManager.hasDamage(i)).collect(Collectors.toList());
+                                    damageManager.hasDamage(i)
+                            ).collect(Collectors.toList());
 
                     if(!damageables.isEmpty()) {
                         if (config.getBoolean("repairFullInventory", true)) {
                             for (ItemStack item : damageables) {
-                                if (item != null)
+                                if (item != null) {
                                     repairItem(player, item, false, false);
+                                }
                             }
+
                         } else {
                             ItemStack item = damageables.get(ThreadLocalRandom.current().nextInt(damageables.size()));
-                            if (item != null)
+
+                            if (item != null) {
                                 repairItem(player, item, false, false);
+                            }
                         }
                     }
                 }

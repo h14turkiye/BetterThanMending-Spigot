@@ -17,7 +17,9 @@ public class NewerDamage implements DamageManager {
     @Override
     public void setDamage(ItemStack item, int damage) {
         Damageable damageable = (Damageable) item.getItemMeta();
-        damageable.setDamage(damage);
+        if(damageable == null) return;
+        if(getDamage(item) == 1) damageable.setDamage(0);
+        else damageable.setDamage(damage);
         item.setItemMeta(damageable);
     }
 
