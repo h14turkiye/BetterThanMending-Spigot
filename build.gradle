@@ -4,7 +4,7 @@ plugins {
 }
 
 group = 'io.github.paulem.btm'
-version = '2.6.4.1'
+version = '2.6.4.2'
 
 repositories {
     mavenCentral()

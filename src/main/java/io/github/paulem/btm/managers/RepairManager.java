@@ -82,10 +82,10 @@ public class RepairManager {
         int expValue = config.getInt("expValue", 20);
 
         if (playerXP >= 30 && itemDamages >= expValue * ratio) {
-            damageManager.setDamage(item, itemDamages - (int) (expValue * ratio));
+            damageManager.setDamage(item, DamageManager.getDamageCalculation(itemDamages, expValue, ratio));
             ExperienceManager.changePlayerExp(player, -expValue);
         } else if (playerXP >= expValue/10) {
-            damageManager.setDamage(item, itemDamages - (int) ((double) expValue /10 * ratio));
+            damageManager.setDamage(item, DamageManager.getDamageCalculation(itemDamages, expValue, 10, ratio));
             ExperienceManager.changePlayerExp(player, -expValue/10);
         } else return;
 
