@@ -18,7 +18,7 @@ public class MaterialUtil {
         Map<Material, Integer> ingredientCount = new HashMap<>();
 
         // Iterate through all recipes for the given item
-        for (Recipe recipe : Bukkit.getServer().getRecipesFor(item.getType())) {
+        for (Recipe recipe : Bukkit.getServer().getRecipesFor(new ItemStack(item.getType()))) {
             if (recipe instanceof ShapedRecipe) {
                 ShapedRecipe shaped = (ShapedRecipe) recipe;
                 for (ItemStack ingredient : shaped.getIngredientMap().values()) {
@@ -47,7 +47,7 @@ public class MaterialUtil {
                 mostCommon = entry.getKey();
             }
         }
-	Bukkit.getLogger().info((String) item+" ingredient:"+mostCommon.name());
+	Bukkit.getLogger().info(item.getType().name()+" ingredient:"+mostCommon.name());
         return mostCommon;
     }
 
