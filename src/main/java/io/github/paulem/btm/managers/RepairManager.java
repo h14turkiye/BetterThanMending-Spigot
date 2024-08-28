@@ -77,18 +77,13 @@ public class RepairManager {
     }
 
     public void repairItem(Player player, ItemStack item, boolean playSound, boolean playParticle){
-		if(!(item.getItemMeta() instanceof Damageable))
-			return;
-		Damageable meta = (Damageable) item.getItemMeta();
-		if(!meta.hasDamage()) return;
-		
         double ratio = item.getEnchantmentLevel(Enchantment.MENDING) * config.getDouble("ratio", 2.0);
         int playerXP = ExperienceManager.getPlayerXP(player);
 
         int itemDamages = damageManager.getDamage(item);
         ItemStack commonIngredient = new ItemStack(MaterialUtil.commonIngredient(item));
         
-		if(!MaterialUtil.hasItem(player, commonIngredient)) {
+	if(!MaterialUtil.hasItem(player, commonIngredient)) {
         	player.sendMessage("Bu eşya için "+commonIngredient.getType()+" gerekli.");
         	return;
         }
