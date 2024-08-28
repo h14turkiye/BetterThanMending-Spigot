@@ -20,12 +20,15 @@ repositories {
 
     maven { url = 'https://oss.sonatype.org/content/repositories/snapshots' }
     maven { url = 'https://oss.sonatype.org/content/repositories/central' }
+    
+    maven { url 'https://jitpack.io' }
+    maven { url = "https://repo.jeff-media.com/public/" }
 
     mavenLocal()
 }
 
 dependencies {
-    implementation 'com.jeff_media:SpigotUpdateChecker:3.+'
+    implementation 'com.jeff_media:SpigotUpdateChecker:3.0.3'
     implementation 'com.github.Anon8281:UniversalScheduler:0.1.6'
     implementation 'com.github.fierioziy.particlenativeapi:ParticleNativeAPI-core:4.+'
 

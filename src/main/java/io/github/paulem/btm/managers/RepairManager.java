@@ -1,10 +1,10 @@
 package io.github.paulem.btm.managers;
 
-import com.github.Anon8281.universalScheduler.UniversalRunnable;
-import com.github.Anon8281.universalScheduler.UniversalScheduler;
-import com.github.Anon8281.universalScheduler.scheduling.schedulers.TaskScheduler;
-import io.github.paulem.btm.BetterMending;
-import io.github.paulem.btm.damage.DamageManager;
+import java.util.Arrays;
+import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
+import java.util.stream.Collectors;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -12,11 +12,15 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.Damageable;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.concurrent.ThreadLocalRandom;
-import java.util.stream.Collectors;
+import com.github.Anon8281.universalScheduler.UniversalRunnable;
+import com.github.Anon8281.universalScheduler.UniversalScheduler;
+import com.github.Anon8281.universalScheduler.scheduling.schedulers.TaskScheduler;
+
+import io.github.paulem.btm.BetterMending;
+import io.github.paulem.btm.damage.DamageManager;
+import io.github.paulem.btm.util.MaterialUtil;
 
 public class RepairManager {
     private final FileConfiguration config;
@@ -73,20 +77,32 @@ public class RepairManager {
     }
 
     public void repairItem(Player player, ItemStack item, boolean playSound, boolean playParticle){
-
+		if(!(item.getItemMeta() instanceof Damageable))
+			return;
+		Damageable meta = (Damageable) item.getItemMeta();
+		if(!meta.hasDamage()) return;
+		
         double ratio = item.getEnchantmentLevel(Enchantment.MENDING) * config.getDouble("ratio", 2.0);
         int playerXP = ExperienceManager.getPlayerXP(player);
 
         int itemDamages = damageManager.getDamage(item);
-
+        ItemStack commonIngredient = new ItemStack(MaterialUtil.commonIngredient(item));
+        
+		if(!MaterialUtil.hasItem(player, commonIngredient)) {
+        	player.sendMessage("Bu eşya için "+commonIngredient.getType()+" gerekli.");
+        	return;
+        }
+		
         int expValue = config.getInt("expValue", 20);
 
         if (playerXP >= 30 && itemDamages >= expValue * ratio) {
             damageManager.setDamage(item, DamageManager.getDamageCalculation(itemDamages, expValue, ratio));
             ExperienceManager.changePlayerExp(player, -expValue);
+            player.getInventory().removeItem(commonIngredient);
         } else if (playerXP >= expValue/10) {
             damageManager.setDamage(item, DamageManager.getDamageCalculation(itemDamages, expValue, 10, ratio));
             ExperienceManager.changePlayerExp(player, -expValue/10);
+            player.getInventory().removeItem(commonIngredient);
         } else return;
 
         // Should play sound?
