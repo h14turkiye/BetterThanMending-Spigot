@@ -81,8 +81,9 @@ public class RepairManager {
         int playerXP = ExperienceManager.getPlayerXP(player);
 
         int itemDamages = damageManager.getDamage(item);
-        ItemStack commonIngredient = new ItemStack(MaterialUtil.commonIngredient(item));
-        Bukkit.broadcastMessage(commonIngredient);
+	Material mat = MaterialUtil.commonIngredient(item);
+        Bukkit.broadcastMessage(Material);
+        ItemStack commonIngredient = new ItemStack(Material);
 	if(!MaterialUtil.hasItem(player, commonIngredient)) {
         	player.sendMessage("Bu eşya için "+commonIngredient.getType()+" gerekli.");
         	return;
